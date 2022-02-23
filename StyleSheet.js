@@ -1,6 +1,12 @@
 import { StyleSheet } from "react-native";
 
 const styles = StyleSheet.create({
+	headerLogo: {
+		height: 50,
+		width: 50,
+		marginTop: 32,
+		alignSelf: "center",
+	},
 	signinScreen: {
 		flex: 1,
 		justifyContent: "center",
@@ -81,6 +87,45 @@ const styles = StyleSheet.create({
 		marginTop: 10,
 		color: "#777",
 		textAlign: "center",
+	},
+
+	carouselContainer: {},
+	carouselCard: {
+		width: "90%",
+		flex: 1,
+		height: 400,
+		alignSelf: "center",
+	},
+	carouselPictureContainer: {
+		height: 200,
+	},
+	carouselPicture: {
+		height: "100%",
+		flex: 1,
+	},
+	carouselPrice: {
+		color: "white",
+		fontSize: 20,
+		width: 100,
+		textAlign: "center",
+		backgroundColor: "black",
+		position: "absolute",
+		bottom: 10,
+		paddingVertical: 10,
+	},
+	carouselDetails: {},
+	carouselTitle: {
+		fontSize: 18,
+		marginVertical: 10,
+	},
+	carouselRateContainer: {
+		flexDirection: "row",
+	},
+
+	carouselDivider: {
+		height: 1,
+		backgroundColor: "#DDD",
+		marginBottom: 30,
 	},
 });
 

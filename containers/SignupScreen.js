@@ -7,11 +7,22 @@ import {
 	TouchableOpacity,
 	ActivityIndicator,
 } from "react-native";
+import { useNavigation } from "@react-navigation/core";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
-import styles from "../StyleSheet";
 import axios from "axios";
 
-const SigninScreen = ({ navigation }) => {
+import { useTogglePasswordVisibility } from "../hooks/useTogglePasswordVisibility";
+import { Ionicons } from "@expo/vector-icons";
+
+import styles from "../StyleSheet";
+
+const SigninScreen = ({ setToken }) => {
+	const { passwordVisibility, rightIcon, handlePasswordVisibility } =
+		useTogglePasswordVisibility();
+
+	const navigation = useNavigation();
+
+	const [errorMessage, setErrorMessage] = useState("");
 	const [isLoading, setIsLoading] = useState(false);
 	const [email, setEmail] = useState("");
 	const [username, setUsername] = useState("");
@@ -22,10 +33,11 @@ const SigninScreen = ({ navigation }) => {
 	const handleSubmit = async () => {
 		try {
 			if (!email || !username || !description || !password || !confirmPassword)
-				window.alert("all fields must be filled");
+				setErrorMessage("Please fill all fields");
 			else if (password !== confirmPassword)
-				window.alert("Passwords aren't matching");
+				setErrorMessage("Passwords aren't matching");
 			else {
+				setErrorMessage("");
 				const data = {
 					email: email,
 					username: username,
@@ -37,11 +49,13 @@ const SigninScreen = ({ navigation }) => {
 					"https://express-airbnb-api.herokuapp.com/user/sign_up",
 					data
 				);
-				console.log(response.data);
+				console.log(response.data.token);
+				setToken(response.data.token);
 				setIsLoading(false);
 			}
 		} catch (error) {
-			console.log(error.message);
+			setIsLoading(false);
+			setErrorMessage(error.response.data.error);
 		}
 	};
 
@@ -78,32 +92,35 @@ const SigninScreen = ({ navigation }) => {
 						onChangeText={(text) => setDescription(text)}
 					/>
 					<View style={styles.formDivider}></View>
+					<View style={styles.passwordInput}>
+						<TextInput
+							style={styles.formInput}
+							secureTextEntry={passwordVisibility}
+							placeholder="password"
+							onChangeText={(text) => setPassword(text)}
+						/>
+						<TouchableOpacity onPress={handlePasswordVisibility}>
+							<Ionicons name={rightIcon} size={24} color="#777" />
+						</TouchableOpacity>
+					</View>
 
-					<TextInput
-						style={styles.formInput}
-						secureTextEntry={true}
-						placeholder="password"
-						onChangeText={(text) => setPassword(text)}
-					/>
 					<View style={styles.formDivider}></View>
-					<TextInput
-						style={styles.formInput}
-						secureTextEntry={true}
-						placeholder="confirm password"
-						onChangeText={(text) => setConfirmPassword(text)}
-					/>
+					<View style={styles.passwordInput}>
+						<TextInput
+							style={styles.formInput}
+							secureTextEntry={passwordVisibility}
+							placeholder="confirm password"
+							onChangeText={(text) => setConfirmPassword(text)}
+						/>
+						<TouchableOpacity onPress={handlePasswordVisibility}>
+							<Ionicons name={rightIcon} size={24} color="#777" />
+						</TouchableOpacity>
+					</View>
+
 					<View style={styles.formDivider}></View>
 
 					<View style={styles.buttonContainer}>
-						<Text
-							style={
-								password === confirmPassword
-									? { color: "transparent" }
-									: styles.orangeText
-							}
-						>
-							Passwords must be the same
-						</Text>
+						<Text style={styles.orangeText}>{errorMessage}</Text>
 						<TouchableOpacity style={styles.button} onPress={handleSubmit}>
 							<Text style={styles.buttonText}>Sign in</Text>
 						</TouchableOpacity>
