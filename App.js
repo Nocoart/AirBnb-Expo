@@ -10,7 +10,7 @@ import { Ionicons } from "@expo/vector-icons";
 import SigninScreen from "./containers/SigninScreen";
 import SignupScreen from "./containers/SignupScreen";
 import HomeScreen from "./containers/HomeScreen";
-import ProfileScreen from "./containers/ProfileScreen";
+import RoomScreen from "./containers/RoomScreen";
 import SettingScreen from "./containers/SettingScreen";
 import styles from "./StyleSheet";
 
@@ -38,6 +38,8 @@ export default function App() {
 
 	if (isLoading === true) return null;
 
+	const color = "#eb5b63";
+
 	return (
 		<NavigationContainer>
 			<Stack.Navigator>
@@ -64,7 +66,7 @@ export default function App() {
 									options={{
 										tabBarLabel: "Home",
 										tabBarIcon: ({ color, size }) => (
-											<Ionicons name={"ios-home"} size={size} color={color} />
+											<Ionicons name={"ios-home"} size={size} color="#eb5b63" />
 										),
 									}}
 								>
@@ -86,7 +88,7 @@ export default function App() {
 											</Stack.Screen>
 
 											<Stack.Screen
-												name="Profile"
+												name="Room"
 												options={{
 													headerBackground: () => (
 														<Image
@@ -97,7 +99,7 @@ export default function App() {
 													headerTitle: "",
 												}}
 											>
-												{() => <ProfileScreen />}
+												{(props) => <RoomScreen {...props} />}
 											</Stack.Screen>
 										</Stack.Navigator>
 									)}
@@ -111,7 +113,7 @@ export default function App() {
 											<Ionicons
 												name={"ios-options"}
 												size={size}
-												color={color}
+												color="#eb5b63"
 											/>
 										),
 									}}

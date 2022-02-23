@@ -1,6 +1,11 @@
 import { StyleSheet } from "react-native";
 
 const styles = StyleSheet.create({
+	activityIndicator: {
+		flex: 1,
+		justifyContent: "center",
+		alignItems: "center",
+	},
 	headerLogo: {
 		height: 50,
 		width: 50,
@@ -89,11 +94,11 @@ const styles = StyleSheet.create({
 		textAlign: "center",
 	},
 
-	carouselContainer: {},
+	//CAROUSSEL
+
 	carouselCard: {
 		width: "90%",
 		flex: 1,
-		height: 400,
 		alignSelf: "center",
 	},
 	carouselPictureContainer: {
@@ -102,6 +107,7 @@ const styles = StyleSheet.create({
 	carouselPicture: {
 		height: "100%",
 		flex: 1,
+		width: "100%",
 	},
 	carouselPrice: {
 		color: "white",
@@ -113,13 +119,39 @@ const styles = StyleSheet.create({
 		bottom: 10,
 		paddingVertical: 10,
 	},
-	carouselDetails: {},
+	carouselDetails: {
+		flexDirection: "row",
+		justifyContent: "space-between",
+		alignItems: "center",
+		marginVertical: 10,
+	},
+	carouselDetailsText: {
+		paddingRight: 60,
+	},
 	carouselTitle: {
 		fontSize: 18,
-		marginVertical: 10,
+		marginTop: 10,
 	},
 	carouselRateContainer: {
 		flexDirection: "row",
+		marginVertical: 10,
+		alignItems: "center",
+	},
+
+	carouselRate: {
+		flexDirection: "row",
+	},
+
+	reviewNumber: {
+		color: "#AAA",
+		paddingLeft: 10,
+	},
+
+	carouselAccountPicture: {
+		width: 60,
+		height: 60,
+		borderRadius: 30,
+		marginLeft: -60,
 	},
 
 	carouselDivider: {
@@ -127,6 +159,31 @@ const styles = StyleSheet.create({
 		backgroundColor: "#DDD",
 		marginBottom: 30,
 	},
+
+	//ROOMSCREEN
+
+	roomScreenPictureContainer: {
+		height: 300,
+	},
+
+	roomScreenPicture: {
+		height: "100%",
+		flex: 1,
+		width: "100%",
+	},
+
+	roomScreenDetails: {
+		flexDirection: "row",
+		justifyContent: "space-between",
+		alignItems: "center",
+		marginVertical: 10,
+		marginHorizontal: 20,
+	},
+	roomScreenDescription: {
+		marginVertical: 10,
+		marginHorizontal: 20,
+	},
+	justifyText: { textAlign: "justify" },
 });
 
 export default styles;
