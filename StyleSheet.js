@@ -180,10 +180,36 @@ const styles = StyleSheet.create({
 		marginHorizontal: 20,
 	},
 	roomScreenDescription: {
-		marginVertical: 10,
+		marginVertical: 3,
 		marginHorizontal: 20,
 	},
 	justifyText: { textAlign: "justify" },
+
+	//MAPSCREEN
+	pinView: {
+		padding: 3,
+		backgroundColor: "#eb5b63",
+		justifyContent: "center",
+		alignItems: "center",
+		borderRadius: 5,
+	},
+	pinText: {
+		color: "white",
+	},
+	pinTriangle: {
+		width: 0,
+		height: 0,
+		backgroundColor: "transparent",
+		borderStyle: "solid",
+		borderLeftWidth: 5,
+		borderRightWidth: 5,
+		borderBottomWidth: 7,
+		borderLeftColor: "transparent",
+		borderRightColor: "transparent",
+		borderBottomColor: "#eb5b63",
+		transform: [{ rotate: "180deg" }],
+		alignSelf: "center",
+	},
 });
 
 export default styles;

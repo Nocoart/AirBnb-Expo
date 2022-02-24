@@ -17,28 +17,36 @@ const MapScreen = ({ navigation }) => {
 	const [data, setData] = useState([]);
 
 	const fetchData = async () => {
-		const response = await axios.get(
-			`https://express-airbnb-api.herokuapp.com/rooms/around?longitude=${coords.longitude}&latitude=${coords.latitude}`
-		);
+		try {
+			const response = await axios.get(
+				`https://express-airbnb-api.herokuapp.com/rooms/around?longitude=${coords.longitude}&latitude=${coords.latitude}`
+			);
 
-		setData(response.data);
-		setisLoading(false);
+			setData(response.data);
+			setisLoading(false);
+		} catch (error) {
+			console.log("maps screen fetch data error =>", error.response.data.error);
+			setisLoading(false);
+		}
 	};
 
 	useEffect(() => {
 		const askPermission = async () => {
-			let { status } = await Location.requestForegroundPermissionsAsync();
-			if (status === "granted") {
-				let location = await Location.getCurrentPositionAsync({});
-				console.log(location.coords);
-				const obj = {
-					latitude: location.coords.latitude,
-					longitude: location.coords.longitude,
-				};
-				setCoords(obj);
-				fetchData();
-			} else {
-				setError(true);
+			try {
+				let { status } = await Location.requestForegroundPermissionsAsync();
+				if (status === "granted") {
+					let location = await Location.getCurrentPositionAsync({});
+					const obj = {
+						latitude: location.coords.latitude,
+						longitude: location.coords.longitude,
+					};
+					setCoords(obj);
+					fetchData();
+				} else {
+					setError(true);
+				}
+			} catch (error) {
+				console.log("maps screen permission error", error.response.data.error);
 			}
 		};
 
@@ -71,7 +79,14 @@ const MapScreen = ({ navigation }) => {
 						}}
 						title={item.title}
 						description={`${item.price} €`}
-					/>
+					>
+						<View style={styles.pinContainer}>
+							<View style={styles.pinView}>
+								<Text style={styles.pinText}>{item.price}€</Text>
+							</View>
+							<View style={styles.pinTriangle}></View>
+						</View>
+					</Marker>
 				);
 			})}
 		</MapView>

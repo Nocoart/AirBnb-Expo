@@ -1,6 +1,7 @@
 //libraries
 import React, { useState, useEffect } from "react";
 import { SwiperFlatList } from "react-native-swiper-flatlist";
+import MapView, { Marker, PROVIDER_GOOGLE } from "react-native-maps";
 import axios from "axios";
 import {
 	View,
@@ -10,12 +11,12 @@ import {
 	Image,
 	Dimensions,
 } from "react-native";
-import { Foundation } from "@expo/vector-icons";
 
 //components
 import Loading from "../components/Loading";
 
 //style
+import { Foundation, AntDesign } from "@expo/vector-icons";
 import styles from "../StyleSheet";
 
 const RoomScreen = ({ route }) => {
@@ -27,11 +28,15 @@ const RoomScreen = ({ route }) => {
 
 	useEffect(() => {
 		const fetchData = async () => {
-			const response = await axios.get(
-				`https://express-airbnb-api.herokuapp.com/rooms/${route.params.id}`
-			);
-			setItem(response.data);
-			setIsLoading(false);
+			try {
+				const response = await axios.get(
+					`https://express-airbnb-api.herokuapp.com/rooms/${route.params.id}`
+				);
+				setItem(response.data);
+				setIsLoading(false);
+			} catch (error) {
+				console.log(error.message);
+			}
 		};
 		fetchData();
 	}, []);
@@ -57,6 +62,7 @@ const RoomScreen = ({ route }) => {
 				/>
 				<Text style={styles.carouselPrice}>{item.price} €</Text>
 			</View>
+
 			<View style={styles.roomScreenDetails}>
 				<View style={styles.carouselDetailsText}>
 					<Text style={styles.carouselTitle} numberOfLines={1}>
@@ -81,14 +87,63 @@ const RoomScreen = ({ route }) => {
 					style={styles.carouselAccountPicture}
 				/>
 			</View>
-			<TouchableOpacity
-				style={styles.roomScreenDescription}
-				onPress={() => setDescriptionlineNb(0)}
+
+			<Text
+				style={[styles.justifyText, styles.roomScreenDescription]}
+				numberOfLines={descriptionlineNb}
 			>
-				<Text style={styles.justifyText} numberOfLines={descriptionlineNb}>
-					{item.description}
-				</Text>
-			</TouchableOpacity>
+				{item.description}
+			</Text>
+			{descriptionlineNb === 3 ? (
+				<TouchableOpacity
+					style={styles.roomScreenDescription}
+					onPress={() => setDescriptionlineNb(0)}
+				>
+					<Text style={{ color: "#BBB" }}>
+						<AntDesign name="caretdown" size={9} color="#BBB" /> show more
+					</Text>
+				</TouchableOpacity>
+			) : (
+				<TouchableOpacity
+					style={styles.roomScreenDescription}
+					onPress={() => setDescriptionlineNb(3)}
+				>
+					<Text style={{ color: "#BBB" }}>
+						<AntDesign name="caretup" size={9} color="#BBB" /> show less
+					</Text>
+				</TouchableOpacity>
+			)}
+
+			<MapView
+				style={{
+					flex: 1,
+					width: "100%",
+					height: 200,
+					marginTop: 30,
+					marginBottom: 100,
+				}}
+				provider={PROVIDER_GOOGLE}
+				initialRegion={{
+					latitude: item.location[1],
+					longitude: item.location[0],
+					latitudeDelta: 0.01,
+					longitudeDelta: 0.01,
+				}}
+			>
+				<Marker
+					coordinate={{
+						latitude: item.location[1],
+						longitude: item.location[0],
+					}}
+				>
+					<View style={styles.pinContainer}>
+						<View style={styles.pinView}>
+							<Text style={styles.pinText}>{item.price}€</Text>
+						</View>
+						<View style={styles.pinTriangle}></View>
+					</View>
+				</Marker>
+			</MapView>
 		</ScrollView>
 	);
 };
