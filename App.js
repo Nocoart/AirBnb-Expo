@@ -139,7 +139,9 @@ export default function App() {
 													headerTitle: "",
 												}}
 											>
-												{() => <MapScreen setToken={setToken} />}
+												{(props) => (
+													<MapScreen setToken={setToken} {...props} />
+												)}
 											</Stack.Screen>
 										</Stack.Navigator>
 									)}
