@@ -1,9 +1,12 @@
-import React, { Component, useState, useEffect } from "react";
-import { useNavigation } from "@react-navigation/native";
-import { View, ActivityIndicator, FlatList } from "react-native";
+//libraries
+import { useState, useEffect } from "react";
+import { View, FlatList } from "react-native";
 import axios from "axios";
 import styles from "../StyleSheet";
+
+//components
 import BnbCard from "../components/BnbCard";
+import Loading from "../components/Loading";
 
 const HomeScreen = () => {
 	const [isLoading, setIsLoading] = useState(true);
@@ -22,13 +25,7 @@ const HomeScreen = () => {
 		fetchData();
 	}, []);
 
-	const navigation = useNavigation();
-	if (isLoading)
-		return (
-			<View style={styles.activityIndicator}>
-				<ActivityIndicator size="large" color="#eb5b63" />
-			</View>
-		);
+	if (isLoading) return <Loading />;
 	return (
 		<View style={styles.carouselContainer}>
 			<FlatList

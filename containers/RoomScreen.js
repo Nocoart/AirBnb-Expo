@@ -1,19 +1,21 @@
+//libraries
 import React, { useState, useEffect } from "react";
 import { SwiperFlatList } from "react-native-swiper-flatlist";
 import axios from "axios";
-
 import {
 	View,
 	Text,
 	TouchableOpacity,
 	ScrollView,
 	Image,
-	ImageBackground,
-	ActivityIndicator,
 	Dimensions,
 } from "react-native";
-
 import { Foundation } from "@expo/vector-icons";
+
+//components
+import Loading from "../components/Loading";
+
+//style
 import styles from "../StyleSheet";
 
 const RoomScreen = ({ route }) => {
@@ -24,22 +26,17 @@ const RoomScreen = ({ route }) => {
 	const { width } = Dimensions.get("window");
 
 	useEffect(() => {
-		const bootstrapAsync = async () => {
+		const fetchData = async () => {
 			const response = await axios.get(
 				`https://express-airbnb-api.herokuapp.com/rooms/${route.params.id}`
 			);
 			setItem(response.data);
 			setIsLoading(false);
 		};
-		bootstrapAsync();
+		fetchData();
 	}, []);
 
-	if (isLoading)
-		return (
-			<View style={styles.activityIndicator}>
-				<ActivityIndicator size="large" color="#eb5b63" />
-			</View>
-		);
+	if (isLoading) return <Loading />;
 
 	return (
 		<ScrollView>
